@@ -1,4 +1,4 @@
-var baseUrl = '';
+var baseUrl = 'http://localhost:7198/';
 $(document).ready(function() {
     // Login form submission
     $('#loginForm').submit(function(e) {
@@ -7,7 +7,7 @@ $(document).ready(function() {
         const password = $('#password').val();
         // AJAX call to your login endpoint
         $.ajax({
-            url: baseUrl+'api/Login/login',
+            url: baseUrl+'api/Login/Login',
             method: 'POST',
             data: { email: email, password: password },
             success: function(response) {
