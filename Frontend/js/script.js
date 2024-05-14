@@ -1,3 +1,4 @@
+var baseUrl = '';
 $(document).ready(function() {
     // Login form submission
     $('#loginForm').submit(function(e) {
