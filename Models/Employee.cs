@@ -6,8 +6,8 @@
         public string Name { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public int DepartmentId { get; set; }
-        public Department Department { get; set; }
-        public List<Qualification> Qualifications { get; set; }
+        public string DepartmentName { get; set; }
+        public string Qualifications { get; set; } // Store qualifications as JSON string
+       
     }
 }

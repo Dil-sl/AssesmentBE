@@ -3,6 +3,9 @@ using AssesmentBE.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AssesmentBE.Controllers
 {
@@ -35,12 +38,42 @@ namespace AssesmentBE.Controllers
             return Ok(employee);
         }
 
+        /* [HttpPost("create")]
+        public async Task<ActionResult<Employee>> CreateEmployee(Employee employee)
+        {
+            if (employee != null)
+            {
+                var result = await _appDbContext.CreateEmployeeWithQualificationsSP(employee.Name, employee.Email, employee.Password, employee.DepartmentName, employee.Qualifications);
+                // Assuming the stored procedure returns the ID of the newly created employee
+                employee.Id = result;
+
+                return Ok(employee);
+            }
+            return BadRequest("Invalid Request");
+        }
+        */
+
         [HttpPost("create")]
         public async Task<ActionResult<Employee>> CreateEmployee(Employee employee)
         {
             if (employee != null)
             {
+                // Assuming employee.Qualifications is a comma-separated string of qualification names
+                var qualificationNames = employee.Qualifications?.Split(',');
+
+                // Add employee to context
                 var result = _appDbContext.Employees.Add(employee).Entity;
+
+                // If there are qualification names, add them to the Qualifications table
+                if (qualificationNames != null && qualificationNames.Length > 0)
+                {
+                    foreach (var qualificationName in qualificationNames)
+                    {
+                        var qualification = new Qualification { Name = qualificationName };
+                        _appDbContext.Qualifications.Add(qualification);
+                    }
+                }
+
                 await _appDbContext.SaveChangesAsync();
                 return Ok(result);
             }
@@ -99,6 +132,20 @@ namespace AssesmentBE.Controllers
                 }
             }
             return BadRequest("Invalid Request");
+        }
+
+        [HttpGet("qualifications")]
+        public ActionResult<List<Qualification>> GetAllQualifications()
+        {
+            var qualifications = _appDbContext.Qualifications.ToList();
+            return Ok(qualifications);
+        }
+
+        [HttpGet("departments")]
+        public ActionResult<List<Department>> GetAllDepartments()
+        {
+            var departments = _appDbContext.Departments.ToList();
+            return Ok(departments);
         }
     }
 }
