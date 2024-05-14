@@ -7,7 +7,7 @@ $(document).ready(function() {
         const password = $('#password').val();
         // AJAX call to your login endpoint
         $.ajax({
-            url: 'api/Login/login',
+            url: baseUrl+'api/Login/login',
             method: 'POST',
             data: { email: email, password: password },
             success: function(response) {
@@ -23,7 +23,7 @@ $(document).ready(function() {
     // Load departments and qualifications for create employee page
     function loadDepartments() {
         $.ajax({
-            url: 'api/Login/departments',
+            url: baseUrl+'api/Login/departments',
             method: 'GET',
             success: function(response) {
                 // Populate department dropdown
@@ -39,7 +39,7 @@ $(document).ready(function() {
 
     function loadQualifications() {
         $.ajax({
-            url: 'api/Login/qualifications',
+            url: baseUrl+'api/Login/qualifications',
             method: 'GET',
             success: function(response) {
                 // Populate qualifications list
@@ -56,7 +56,7 @@ $(document).ready(function() {
     // On dashboard page load, fetch and display employee data
     if (window.location.pathname === '/pages/dashboard.html') {
         $.ajax({
-            url: 'api/Login/employees',
+            url: baseUrl+'api/Login/employees',
             method: 'GET',
             success: function(response) {
                 // Populate employee table
@@ -89,7 +89,7 @@ $(document).ready(function() {
     $(document).on('click', '.editBtn', function() {
         const employeeId = $(this).data('id');
         $.ajax({
-            url: `api/Login/${employeeId}`,
+            url: baseUrl+`api/Login/${employeeId}`,
             method: 'GET',
             success: function(employee) {
                 // Populate create employee form with employee data
@@ -117,7 +117,7 @@ $(document).ready(function() {
         const qualifications = $('#qualifications').val().join(',');
         // AJAX call to create employee endpoint
         $.ajax({
-            url: 'api/Login/create',
+            url:baseUrl+'api/Login/create',
             method: 'POST',
             data: { name: name, email: email, password: password, departmentId: departmentId, qualifications: qualifications },
             success: function(response) {
